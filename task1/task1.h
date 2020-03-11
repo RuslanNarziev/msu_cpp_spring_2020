@@ -1,10 +1,10 @@
-#pragma once
+#pragma once 
 #include <iostream>
 
-char* startptr = nullptr;
-char* curptr = nullptr;
-size_t alloc_size = 0;
-size_t cursize = 0;
-void MakeAllocator(size_t maxsize);
-char* Alloc(size_t size);
-void Reset();
+extern char* startptr;
+extern char* curptr;
+extern size_t alloc_size;
+extern size_t cursize;
+extern void MakeAllocator(size_t maxsize);
+extern char* Alloc(size_t size);
+extern void Reset();

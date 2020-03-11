@@ -3,7 +3,7 @@
 int main() {
     MakeAllocator(100);
     char* ptr = Alloc(10);
-    if(ptr - 10 == startptr) 
+    if(curptr - 10 == ptr) 
         std::cout << "Alloc works correct";
     else
         std::cout << "Alloc works incorrect";
