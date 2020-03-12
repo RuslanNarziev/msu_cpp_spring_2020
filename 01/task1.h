@@ -1,10 +1,17 @@
 #pragma once 
 #include <iostream>
 
-extern char* startptr;
-extern char* curptr;
-extern size_t alloc_size;
-extern size_t cursize;
-extern void MakeAllocator(size_t maxsize);
-extern char* Alloc(size_t size);
-extern void Reset();
+class Allocator{
+    char* startptr;
+    char* curptr;
+    size_t alloc_size;
+    size_t cursize;
+public:
+    Allocator();
+    ~Allocator();
+    char* Get_curptr();
+    char* Get_startptr();
+    void MakeAllocator(size_t maxsize);
+    char* Alloc(size_t size);
+    void Reset();
+};

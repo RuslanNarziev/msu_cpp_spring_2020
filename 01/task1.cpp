@@ -1,18 +1,26 @@
 #include "task1.h"
 
-char* startptr = nullptr;
-char* curptr = nullptr;
-size_t alloc_size = 0;
-size_t cursize = 0;
+Allocator::Allocator() {
+    startptr = nullptr;
+    curptr = nullptr;
+    alloc_size = 0;
+    cursize = 0;
+}
 
-void MakeAllocator(size_t maxsize) {
+Allocator::~Allocator() {
+    if(startptr != nullptr) {
+        free(startptr);
+    }
+}
+
+void Allocator::MakeAllocator(size_t maxsize) {
     startptr = (char*) malloc(maxsize);
     if(startptr != NULL)
         cursize = alloc_size = maxsize;
         curptr = startptr;
 }
 
-char* Alloc(size_t size) {
+char* Allocator::Alloc(size_t size) {
     if(cursize >= size) {
         cursize -= size;
         curptr += size;
@@ -22,7 +30,15 @@ char* Alloc(size_t size) {
     }
 }
 
-void Reset() {
+void Allocator::Reset() {
     curptr = startptr;
     cursize = alloc_size;
+}
+
+char* Allocator::Get_curptr() {
+    return curptr;
+}
+
+char* Allocator::Get_startptr() {
+    return startptr;
 }
