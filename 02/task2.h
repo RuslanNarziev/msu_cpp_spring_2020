@@ -13,4 +13,8 @@ class Parser {
 public:
     Parser(On_number Call_num, On_string Call_str, On_void Call_beg, On_void Call_end);
     void Parse(const char* text);
+    void Set_Call_num(On_number Call_num);
+    void Set_Call_str(On_string Call_str);
+    void Set_Call_beg(On_void Call_beg);
+    void Set_Call_end(On_void Call_end);
 };

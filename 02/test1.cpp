@@ -5,7 +5,7 @@ void Call_num(int num) {
 }
 
 void Call_str(char* str) {
-    std::cout << "This is string " << str;
+    std::cout << "This is string " << str << "\n";
 }
 
 void Call_beg() {
