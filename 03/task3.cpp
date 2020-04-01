@@ -1,6 +1,6 @@
 #include "task3.h"
 
-Matrix::Matrix(int r, int c) {
+Matrix::Matrix(size_t r, size_t c) {
     data = new int[r * c];
     rows = r;
     columns = c;
@@ -20,7 +20,7 @@ Matrix & Matrix::operator*=(int num) {
     return *this;
 }
 
-bool Matrix::operator==(Matrix & A) {
+bool Matrix::operator==(const Matrix & A) const {
     if(A.rows != rows || A.columns != columns)
         throw std::out_of_range("");
     for(int i = 0; i < rows * columns; i++)
@@ -29,13 +29,8 @@ bool Matrix::operator==(Matrix & A) {
     return true;
 }
 
-bool Matrix::operator!=(Matrix & A) {
-    if(A.rows != rows || A.columns != columns)
-        throw std::out_of_range("");
-    for(int i = 0; i < rows * columns; i++)
-        if(data[i] != A.data[i])
-            return true;
-    return false;
+bool Matrix::operator!=(const Matrix & A) const {
+    return !(*this == A);
 }
 
 Matrix::Row Matrix::operator[](int row) {

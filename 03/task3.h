@@ -6,7 +6,7 @@ class Matrix {
     int columns;
     int* data;
 public:
-    Matrix(int r, int c);
+    Matrix(size_t r, size_t c);
     int Get_rows();
     int Get_columns();
     Matrix & operator*=(int num);
