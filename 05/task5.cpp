@@ -10,11 +10,15 @@ BigInt::BigInt(long long num) {
         sign = false;
     }
     while(num) {
-        if(size)
+        if(size) {
             number = (char*) realloc(number, sizeof(char) * (size + 1));
-        else
+            if(!number)
+                throw std::bad_alloc;
+        } else { 
             number = (char*) malloc(sizeof(char));
-        number[size++] = num % 10;
+            if(!number)
+                throw std::bad_alloc;
+        } number[size++] = num % 10;
         num /= 10;  
     }
 }
@@ -35,7 +39,10 @@ BigInt::BigInt(const char* num) {
         size++;
     }
     number = (char*) malloc(sizeof(char) * size);
-    for(size_t i = 0; i < size; i++) {
+    if(!number) {
+        throw std::bad_alloc;
+        size = 0;
+    } for(size_t i = 0; i < size; i++) {
         c = *--num - '0';
         number[i] = c;
     }
@@ -44,8 +51,11 @@ BigInt::BigInt(const char* num) {
 BigInt::BigInt(const BigInt & A) {
     number = (char*) malloc(sizeof(char) * A.size);
     size = A.size;
-    sign = A.sign;
-    memcpy(number, A.number, sizeof(char) * A.size);
+    if(!number) {
+        throw std::bad_alloc;
+        size = 0;
+    } sign = A.sign;
+    memcpy(number, A.number, sizeof(char) * size);
 }
 
 BigInt::~BigInt() {
@@ -58,8 +68,11 @@ BigInt BigInt::operator=(const BigInt & A) {
         free(number);
     number = (char*) malloc(sizeof(char) * A.size);
     size = A.size;
-    sign = A.sign;
-    memcpy(number, A.number, sizeof(char) * A.size);
+    if(!number) {
+        throw std::bad_alloc;
+        size = 0;
+    } sign = A.sign;
+    memcpy(number, A.number, sizeof(char) * size);
     return *this;
 }
 
@@ -69,6 +82,10 @@ BigInt BigInt::Add(const BigInt & A) const{
     char a, b;
     temp.number = (char*) malloc(size + 1);
     temp.size = size + 1;
+    if(!number) {
+        throw std::bad_alloc;
+        temp.size = 0;
+    } 
     for(size_t i = 0; i < size; i++) {
         a = 0;
         if(i < A.size)
@@ -92,6 +109,10 @@ BigInt BigInt::Sub(const BigInt & A) const{
     char a, b;
     temp.number = (char*) malloc(size);
     temp.size = size;
+    if(!number) {
+        throw std::bad_alloc;
+        temp.size = 0;
+    } 
     int i;
     for(i = 0; i < size; i++) {
         a = 0;
