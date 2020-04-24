@@ -13,11 +13,11 @@ BigInt::BigInt(long long num) {
         if(size) {
             number = (char*) realloc(number, sizeof(char) * (size + 1));
             if(!number)
-                throw std::bad_alloc;
+                throw std::bad_alloc();
         } else { 
             number = (char*) malloc(sizeof(char));
             if(!number)
-                throw std::bad_alloc;
+                throw std::bad_alloc();
         } number[size++] = num % 10;
         num /= 10;  
     }
@@ -40,7 +40,7 @@ BigInt::BigInt(const char* num) {
     }
     number = (char*) malloc(sizeof(char) * size);
     if(!number) {
-        throw std::bad_alloc;
+        throw std::bad_alloc();
         size = 0;
     } for(size_t i = 0; i < size; i++) {
         c = *--num - '0';
@@ -52,7 +52,7 @@ BigInt::BigInt(const BigInt & A) {
     number = (char*) malloc(sizeof(char) * A.size);
     size = A.size;
     if(!number) {
-        throw std::bad_alloc;
+        throw std::bad_alloc();
         size = 0;
     } sign = A.sign;
     memcpy(number, A.number, sizeof(char) * size);
@@ -69,7 +69,7 @@ BigInt BigInt::operator=(const BigInt & A) {
     number = (char*) malloc(sizeof(char) * A.size);
     size = A.size;
     if(!number) {
-        throw std::bad_alloc;
+        throw std::bad_alloc();
         size = 0;
     } sign = A.sign;
     memcpy(number, A.number, sizeof(char) * size);
@@ -83,7 +83,7 @@ BigInt BigInt::Add(const BigInt & A) const{
     temp.number = (char*) malloc(size + 1);
     temp.size = size + 1;
     if(!number) {
-        throw std::bad_alloc;
+        throw std::bad_alloc();
         temp.size = 0;
     } 
     for(size_t i = 0; i < size; i++) {
@@ -110,7 +110,7 @@ BigInt BigInt::Sub(const BigInt & A) const{
     temp.number = (char*) malloc(size);
     temp.size = size;
     if(!number) {
-        throw std::bad_alloc;
+        throw std::bad_alloc();
         temp.size = 0;
     } 
     int i;
