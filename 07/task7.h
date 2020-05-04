@@ -7,8 +7,10 @@ public:
     using value_type = T;
     using pointer = T*;
     using size_type = size_t;
+    using const_reference = const T&;
 
     pointer allocate(size_type count = 0);
+    void construct(pointer ptr, const_reference val);
     void deallocate(pointer ptr, size_type count);
     void destroy(pointer ptr);
 };
@@ -21,9 +23,12 @@ T* allocator<T>::allocate(size_type count) {
 }
 
 template<class T>
+void allocator<T>::construct(pointer ptr, const_reference val){
+    new (ptr) value_type(val);
+}
+
+template<class T>
 void allocator<T>::deallocate(pointer ptr, size_type count) {
-    for(size_t i = 0; i < count; i++)
-        destroy(ptr + i);
     ::operator delete(ptr, sizeof(value_type) * count);
 }
 
@@ -193,7 +198,6 @@ public:
 
 template<class T, class Alloc>
 vector<T, Alloc>::vector(size_type count) {
-    alloc = Alloc();
     if(count) 
         capacity = 2 * count;
     else
@@ -201,7 +205,7 @@ vector<T, Alloc>::vector(size_type count) {
     _size = count;
     ptr = alloc.allocate(capacity);
     for(size_t i = 0; i < count; i++) {
-        ptr[i] = T();
+        alloc.construct(ptr + i, value_type());
     }
 }
 
@@ -304,7 +308,7 @@ void vector<T, Alloc>::resize(size_type count) {
         if(count > capacity)
             reserve(2 * count);
         for(size_t i = _size; i < count; i++)
-            ptr[i] = T();
+            alloc.construct(ptr + i, value_type());
     }
     _size = count;
 }
@@ -327,8 +331,10 @@ template<class T, class Alloc>
 void vector<T, Alloc>::reserve(size_type count) {
     if(count > capacity) {
         T* _ptr= alloc.allocate(count);
-        for(size_t i = 0; i < _size; i++)
+        for(size_t i = 0; i < _size; i++) {
             _ptr[i] = ptr[i];
+            alloc.destroy(ptr + i);
+        }
         alloc.deallocate(ptr, _size);
         ptr = _ptr;
         capacity = count;
