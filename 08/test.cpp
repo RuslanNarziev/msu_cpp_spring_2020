@@ -9,7 +9,6 @@ struct A {
 int get_value(const A& a) { return a.value; }
 int main(){
     ThreadPool pool(3);
-
     auto task1 = pool.exec(get_value, A{1});
     assert(task1.get() == 1);
 
